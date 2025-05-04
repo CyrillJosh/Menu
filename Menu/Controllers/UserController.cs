@@ -1,5 +1,7 @@
-﻿using Menu.Models;
+﻿using Menu.Context;
+using Menu.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace Menu.Controllers
