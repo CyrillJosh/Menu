@@ -1,0 +1,48 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    ViewData["Title"] = "Uer Management";
+}
+
+@model Person
+
+<div>
+    <form method="post" asp-controller="User" asp-action="Update" class="has-validation" novalidate>
+        <!-- HIDDEN -->
+        <input asp-for="Id" hidden />
+        <input asp-for="DateCreated" hidden />
+        <input asp-for="User.Id" hidden />
+        <div class="row g-3">
+            <div class="col-6">
+                <label class="form-label" asp-for="Firstname">FirstName</label>
+                <input class="form-control" asp-for="Firstname" type="text" required />
+                <span class="text-danger" asp-validation-for="Firstname"></span>
+            </div>
+            <div class="col-6">
+                <label class="form-label" asp-for="Lastname">FirstName</label>
+                <input class="form-control" asp-for="Lastname" type="text" required />
+                <span class="text-danger" asp-validation-for="Lastname"></span>
+            </div>
+            <div class="col-12">
+                <label class="form-label" asp-for="Email">Email</label>
+                <input class="form-control" asp-for="Email" type="email" placeholder="my@email.com" required />
+                <span class="text-danger" asp-validation-for="Email"></span>
+            </div>
+            <div class="col-6">
+                <label class="form-label" asp-for="User.Username">Username</label>
+                <div class="input-group">
+                    <span class="input-group-text">@@</span>
+                    <input class="form-control" asp-for="User.Username" type="text" required />
+                </div>
+                <span class="text-danger" asp-validation-for="User.Username"></span>
+            </div>
+            <div class="col-6">
+                <label class="form-label" asp-for="User.Password">Password</label>
+                <input class="form-control" asp-for="User.Password" type="password" required />
+                <span class="text-danger" asp-validation-for="User.Password"></span>
+            </div>
+            <button class="btn btn-success col-12 my-5" type="submit">Create</button>
+        </div>
+    </form>
+</div>
