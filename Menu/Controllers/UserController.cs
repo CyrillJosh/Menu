@@ -21,8 +21,8 @@ namespace Menu.Controllers
         //Index - Login
         public IActionResult Index()
         {
-            if (ModelState.IsValid)
-                return RedirectToAction("HomePage");
+            //if (ModelState.IsValid)
+            //    return RedirectToAction("HomePage");
 
             return View();
         }
