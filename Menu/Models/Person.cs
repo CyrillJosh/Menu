@@ -23,5 +23,7 @@ public partial class Person
 
     public DateTime? DateUpdated { get; set; }
 
+    public string Role {  get; set; }
+
     public virtual User User { get; set; } = null!;
 }

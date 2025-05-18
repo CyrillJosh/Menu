@@ -1,4 +1,5 @@
-﻿using Menu.Context;
+﻿using Menu.Attributes;
+using Menu.Context;
 using Menu.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,16 +19,37 @@ namespace Menu.Controllers
             _context = context;
         }
 
-        //Index - Login
+        //Index
         public IActionResult Index()
         {
-            //if (ModelState.IsValid)
-            //    return RedirectToAction("HomePage");
+            return View();
+        }
 
+        //Login
+        public IActionResult Login(User user)
+        {
+            //Check for User
+            if (_context.Users.Any(x => x.Username == user.Username) && !ModelState.IsValid)
+            {
+                //Get person
+                var person = _context.People.Include(u => u.User).Where(x => x.User.Username == user.Username).FirstOrDefault();
+                if (!BCrypt.Net.BCrypt.Verify(user.Password, person.User.Password))
+                {
+                    //Invalid
+                    return View();
+                }
+                //Set Session String
+                HttpContext.Session.SetString("_Id", person.Id.ToString());
+                HttpContext.Session.SetString("_Role", person.Role.ToString());
+
+                return RedirectToAction("HomePage");
+            }
+            //Invalid
             return View();
         }
 
         //HomePage
+        [Auth("Admin,Manager")]
         public IActionResult HomePage()
         {
             List<Person> people = _context.People.Include(p => p.User).ToList();
@@ -35,18 +57,20 @@ namespace Menu.Controllers
         }
         //Create
         [HttpGet]
+        [Auth("Admin,Manager")]
         public IActionResult Create()
         {
             return View();
         }
 
         //CreateProcess
+        [Auth("Admin,Manager")]
         public IActionResult Create(Person person)
         {
             if (!ModelState.IsValid) return View(person);
 
             person.DateCreated = DateTime.Now;
-
+            person.User.Password = BCrypt.Net.BCrypt.HashPassword(person.User.Password);
             _context.People.Add(person);
             _context.SaveChanges();
 
@@ -54,6 +78,7 @@ namespace Menu.Controllers
         }
         //Update
         [HttpGet]
+        [Auth("Admin,Manager")]
         public IActionResult Update(int id)
         {
             Person person = _context.People.Include(p => p.User).FirstOrDefault(x => x.Id == id);
@@ -61,6 +86,7 @@ namespace Menu.Controllers
             return View(person);
         }
         //Update Process
+        [Auth("Admin,Manager")]
         public IActionResult Update(Person person)
         {
             //Validate
@@ -77,6 +103,7 @@ namespace Menu.Controllers
             return RedirectToAction("Index");
         }
         //Delete Process
+        [Auth("Admin,Manager")]
         public IActionResult Delete(int id)
         {
             Person person = _context.People.Include(p => p.User).FirstOrDefault(x => x.Id == id);
@@ -88,17 +115,5 @@ namespace Menu.Controllers
 
             return Json(new { success = true, message = "Record successfully removed!" });
         }
-
-        //Test incryption
-
-        //private byte[] CalculateSHA256(string str)
-        //{
-        //    SHA256 sha256 = SHA256Managed.Create();
-        //    byte[] hashValue;
-        //    UTF8Encoding objUtf8 = new UTF8Encoding();
-        //    hashValue = sha256.ComputeHash(objUtf8.GetBytes(str));
-
-        //    return hashValue;
-        //}
     }
 }
