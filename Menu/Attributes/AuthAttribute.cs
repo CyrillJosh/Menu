@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Diagnostics;
 
 namespace Menu.Attributes
 {
@@ -14,23 +15,11 @@ namespace Menu.Attributes
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             var httpContext = context.HttpContext;
-
-            try
-            {
-                //Get Session
-                var user = httpContext.Session.GetString("_Id");
-                var role = httpContext.Session.GetString("_Role");
-                //Check Session
-                if (!Role.Contains(role))
-                {
-                    context.Result = new RedirectToActionResult("Login", "User", null);
-                }
-            }
-            catch (Exception e)
-            {
-                context.Result = new RedirectToActionResult("Index", "Home", null);
-            }
-
+            //Get Session
+            var user = httpContext.Session.GetString("_Id");
+            var role = httpContext.Session.GetString("_Role");
+            if (string.IsNullOrEmpty(user) || role.Length == 0 || role == null || !Role.Contains(role))
+                context.Result = new RedirectToActionResult("Login", "User", null);
         }
     }
 }

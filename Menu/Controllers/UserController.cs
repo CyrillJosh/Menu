@@ -20,27 +20,29 @@ namespace Menu.Controllers
         }
 
         //Index
-        public IActionResult Index()
+        [HttpGet]
+        public IActionResult Login()
         {
             return View();
         }
 
         //Login
+        [HttpPost]
         public IActionResult Login(User user)
         {
             //Check for User
             if (_context.Users.Any(x => x.Username == user.Username) && !ModelState.IsValid)
             {
                 //Get person
-                var person = _context.People.Include(u => u.User).Where(x => x.User.Username == user.Username).FirstOrDefault();
-                if (!BCrypt.Net.BCrypt.Verify(user.Password, person.User.Password))
+                var currUser = _context.Users.Where(x => x.Username == user.Username).FirstOrDefault();
+                if (!BCrypt.Net.BCrypt.Verify(user.Password, currUser.Password))
                 {
                     //Invalid
                     return View();
                 }
                 //Set Session String
-                HttpContext.Session.SetString("_Id", person.Id.ToString());
-                HttpContext.Session.SetString("_Role", person.Role.ToString());
+                HttpContext.Session.SetString("_Id", currUser.Id.ToString());
+                HttpContext.Session.SetString("_Role", currUser.Role.ToString());
 
                 return RedirectToAction("HomePage");
             }
