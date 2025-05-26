@@ -117,5 +117,12 @@ namespace Menu.Controllers
 
             return Json(new { success = true, message = "Record successfully removed!" });
         }
+
+        [HttpPost]
+        public IActionResult Logout()
+        {
+            HttpContext.Session.Clear(); // clears all session data
+            return RedirectToAction("Login", "User");
+        }
     }
 }

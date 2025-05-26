@@ -16,16 +16,35 @@ public partial class MyDBContext : DbContext
     {
     }
 
+    public virtual DbSet<Dish> Dishes { get; set; }
+
     public virtual DbSet<Person> People { get; set; }
 
     public virtual DbSet<User> Users { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see https://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Data Source=LAB7-PC20\\ANILAB3DPC20;Initial Catalog=Odato_ProjectDB;Integrated Security=True;Trust Server Certificate=True;");
+        => optionsBuilder.UseSqlServer("Data Source=LAPTOP-K56S2BSD\\SQLEXPRESS;Initial Catalog=ProjectDB;Integrated Security=True;Trust Server Certificate=True;");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.Entity<Dish>(entity =>
+        {
+            entity.HasKey(e => e.DishId).HasName("PK__Dish__18834F504D647171");
+
+            entity.ToTable("Dish");
+
+            entity.Property(e => e.Category).HasMaxLength(50);
+            entity.Property(e => e.CreatedAt)
+                .HasDefaultValueSql("(getdate())")
+                .HasColumnType("datetime");
+            entity.Property(e => e.Description).HasMaxLength(500);
+            entity.Property(e => e.ImageMimeType).HasMaxLength(50);
+            entity.Property(e => e.IsAvailable).HasDefaultValue(true);
+            entity.Property(e => e.Name).HasMaxLength(100);
+            entity.Property(e => e.Price).HasColumnType("decimal(8, 2)");
+        });
+
         modelBuilder.Entity<Person>(entity =>
         {
             entity.ToTable("Person");
@@ -46,6 +65,7 @@ public partial class MyDBContext : DbContext
         {
             entity.ToTable("User");
 
+            entity.Property(e => e.Role).HasMaxLength(50);
             entity.Property(e => e.Username).HasMaxLength(50);
         });
 

@@ -1,29 +1,46 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model List<Dish>
 @{
-    ViewData["Title"] = "Menu";
+    var userId = Context.Session.GetString("_Id");
+    var userRole = Context.Session.GetString("_Role");
 }
-@* @model List<Dishes> *@
-<div>
-    @* Search *@
-    <form>
-        <div class="col-12 input-group mb-3">
-            <button class="input-group-text button" type="submit" id="basic-addon1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0"></path>
-                </svg>
-            </button>
-            <input class="form-control" type="text" name="Search" placeholder="Search" aria-label="Search">
+<div class="container py-5">
+    <h2 class="text-center text-primary mb-4">Our Menu</h2>
+    @if (!string.IsNullOrEmpty(userId))
+    {
+        <div class="d-flex justify-content-end">
+            <a asp-controller="Menu" asp-action="Create" class="btn btn-success">Add New Dish</a>
         </div>
-    </form>
-    @* Display *@
-    <div>
-        @foreach(var s in Model)
+    }
+    <div class="row row-cols-1 row-cols-md-3 g-4">
+        @foreach (var dish in Model)
         {
-            @* Template *@
-            <div class="card">
-
+            <div class="col">
+                <div class="card h-100 shadow rounded-4 border-0">
+                    @if (dish.ImageData != null)
+                    {
+                        <img src="data:@dish.ImageMimeType;base64,@Convert.ToBase64String(dish.ImageData)" class="card-img-top rounded-top-4" alt="@dish.Name" style="height: 200px; object-fit: cover;" />
+                    }
+                    else
+                    {
+                        <img src="https://via.placeholder.com/300x200?text=No+Image" class="card-img-top rounded-top-4" alt="No image" />
+                    }
+                    <div class="card-body">
+                        <h5 class="card-title">@dish.Name</h5>
+                        <p class="card-text">@dish.Description</p>
+                        <h6 class="text-success fw-bold">$@dish.Price.ToString("0.00")</h6>
+                    </div>
+                    <div class="card-footer bg-transparent border-0 text-end">
+                        @if (!string.IsNullOrEmpty(userId))
+                        {
+                            <a asp-action="Edit" asp-route-id="@dish.DishId" class="btn btn-sm btn-warning">Edit</a>
+                            <a asp-action="Delete" asp-route-id="@dish.DishId" class="btn btn-sm btn-danger">Delete</a>
+                        }
+                        else
+                        {
+                            <a asp-area="" asp-controller="Menu" asp-action="Details" asp-route-id="@dish.DishId" class="btn btn-outline-primary btn-sm">Order</a>
+                        }
+                    </div>
+                </div>
             </div>
         }
     </div>

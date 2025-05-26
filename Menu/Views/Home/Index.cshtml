@@ -1,8 +1,76 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
 }
+<!-- HERO BANNER  -------------------------------------------------------->
+<section class="position-relative overflow-hidden">
+    <!-- Background image (Unsplash placeholder) -->
+    <img src="https://images.unsplash.com/photo-1551782450-a2132b4ba21d?auto=format&fit=crop&w=1650&q=80"
+         alt="Friends enjoying food together"
+         class="w-100"
+         style="height: 65vh; object-fit: cover; filter: brightness(60%);" />
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+    <!-- Overlay content -->
+    <div class="position-absolute top-50 start-50 translate-middle text-center text-white px-3">
+        <h1 class="display-3 fw-bold mb-3">Welcome to The Socials</h1>
+        <p class="lead mb-4">
+            Great food tastes better when shared. Gather, laugh, and savor every bite together.
+        </p>
+        <a asp-area="" asp-controller="Menu" asp-action="Index" class="btn btn-danger btn-lg me-2">Browse Menu</a>
+    </div>
+</section>
+
+<!-- FEATURE CARDS  ------------------------------------------------------>
+<section class="container py-5" id="highlights">
+    <h2 class="text-center fw-bold text-primary mb-5">Why Dine at The Socials?</h2>
+    <div class="row g-4">
+        <!-- Card 1 -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=800&q=80"
+                     class="card-img-top"
+                     alt="Table full of share-plates">
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-semibold">Share-Plates Galore</h5>
+                    <p class="card-text">From tapas to giant grazing boards, every dish is designed for passing around.</p>
+                </div>
+            </div>
+        </div>
+        @* Card 2 *@
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <img src="https://plus.unsplash.com/premium_photo-1726711248971-5622f6e8dceb?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+                     class="card-img-top"
+                     alt="Group of friends socializing and enjoying food" />
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-semibold">Connect & Celebrate</h5>
+                    <p class="card-text">
+                        Celebrate good times with great company. Our vibrant atmosphere is perfect for making memories and sharing laughter.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 3 -->
+        <div class="col-md-4">
+            <div class="card h-100 shadow-sm border-0">
+                <img src="https://images.unsplash.com/photo-1511671782779-c97d3d27a1d4?auto=format&fit=crop&w=800&q=80"
+                     class="card-img-top"
+                     alt="Live music at a social venue" />
+                <div class="card-body text-center">
+                    <h5 class="card-title fw-semibold">Live Vibes</h5>
+                    <p class="card-text">Enjoy acoustic sets and DJ nights that turn dinner into a social experience.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- ORIGINAL WELCOME TEXT  ---------------------------------------------->
+<section class="text-center py-5 bg-light">
+    <h2 class="display-5 fw-bold text-primary mb-3">We’re All About Togetherness</h2>
+    <p class="lead text-secondary">
+        Great food tastes better when shared. <a asp-area="" asp-controller="Menu" asp-action="Index" class="text-decoration-none fw-semibold text-danger">Explore our menu</a> and discover dishes made for gathering, laughing, and savoring every bite together.
+    </p>
+</section>
+
+

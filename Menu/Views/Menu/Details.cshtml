@@ -1,0 +1,33 @@
+﻿@model Dish
+@{
+    ViewData["Title"] = "Dish Details";
+}
+
+<div class="container my-5">
+    <div class="card shadow-sm">
+        <div class="row g-0">
+            <div class="col-md-5">
+                @if (Model.ImageData != null)
+                {
+                    var imageBase64 = Convert.ToBase64String(Model.ImageData);
+                    var imageSrc = $"data:{Model.ImageMimeType};base64,{imageBase64}";
+                    <img src="@imageSrc" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="@Model.Name" />
+                }
+                else
+                {
+                    <img src="https://via.placeholder.com/400x300?text=No+Image" class="img-fluid rounded-start" alt="No image available" />
+                }
+            </div>
+            <div class="col-md-7">
+                <div class="card-body">
+                    <h2 class="card-title text-primary fw-bold">@Model.Name</h2>
+                    <p class="card-text text-muted">@Model.Description</p>
+                    <h4 class="text-success fw-semibold">Price: $@Model.Price.ToString("F2")</h4>
+                    <hr />
+                    <a href="#Order" class="btn btn-outline-success mt-3">Add</a>
+                    <a asp-action="Index" class="btn btn-outline-secondary mt-3">Back to Menu</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
